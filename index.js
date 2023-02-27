@@ -23,17 +23,18 @@ async function run() {
   try {
     app.get("/projects", async (req, res) => {
       const query = {};
-      const projects = await projectCollection.find(query).toArray();
+      const projects = await projectCollection
+        .find(query)
+        .sort({ _id: -1 })
+        .limit(3)
+        .toArray();
       res.send(projects);
     });
 
     app.get("/project/:name", async (req, res) => {
       const name = req.params.name;
       const query = { name: name };
-      const project = await projectCollection
-        .findOne(query)
-        .sort({ _id: -1 })
-        .limit(3);
+      const project = await projectCollection.findOne(query);
       res.send(project);
     });
   } finally {
