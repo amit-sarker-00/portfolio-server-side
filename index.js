@@ -30,7 +30,10 @@ async function run() {
     app.get("/project/:name", async (req, res) => {
       const name = req.params.name;
       const query = { name: name };
-      const project = await projectCollection.findOne(query);
+      const project = await projectCollection
+        .findOne(query)
+        .sort({ _id: -1 })
+        .limit(3);
       res.send(project);
     });
   } finally {
